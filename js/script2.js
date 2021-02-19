@@ -18,3 +18,44 @@ P.S. Здесь есть несколько вариантов решения з
 'use strict';
 
 // Возьмите свой код из предыдущей практики
+
+
+document.addEventListener('DOMContent', () =>{
+
+  const movieDB = {
+    movies: [
+        "Логан",
+        "Лига справедливости",
+        "Ла-ла лэнд",
+        "Одержимость",
+        "Скотт Пилигрим против..."
+    ]
+};
+
+let adv = document.querySelectorAll('.promo__adv img'),
+    poster = document.querySelector('.promo__bg'),
+    ganre = poster.querySelector('.promo__genre'),
+    movieList = document.querySelector('.promo__interactive-list');
+
+
+adv.forEach(item => {
+    item.remove();
+});
+
+ganre.textContent = 'драма';
+ganre.style.color = 'red';
+poster.style.backgroundImage = "url('img/bg.jpg')";
+movieList.innerHTML = '';
+
+movieDB.movies.sort();
+movieDB.movies.forEach((film, i) => {
+    movieList.innerHTML += `
+    <li class="promo__interactive-item"> ${i + 1} - ${film}
+       <div class="delete"></div>
+    </li>`;
+});
+
+  
+
+})
+
