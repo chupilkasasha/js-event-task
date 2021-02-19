@@ -20,7 +20,7 @@
 Для получения доступа к значению input - обращаемся к нему как input.value;
 P.S. Здесь есть несколько вариантов решения задачи, принимается любой, но рабочий.
 
-2) Если название фильма больше, чем 21 символ - обрезать его и добавить три точки
+2) Если название фильма больше, чем 18 символ - обрезать его и добавить три точки
 
 3) При клике на мусорную корзину - элемент будет удаляться из списка (сложно)
 
@@ -56,9 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
         let newFilm = addInput.value;
         let favorite = checkbox.checked;
 
-        movieDB.movies.push(newFilm);
-        sortArr(movieDB.movies);
-    })
+        if (newFilm) {
+            if (newFilm.length > 18) {
+                newFilm = `${newFilm.substring(0,15)}...`;
+            }
+            if (favorite) {
+                console.log('my favorite movie!')
+            }
+            movieDB.movies.push(newFilm);
+            sortArr(movieDB.movies);
+            createMovieList(movieDB.movies, movieList);
+        }
+        event.target.reset();
+    });
 
     let delAdv = (arr) => {
         arr.forEach(item => {
@@ -75,22 +85,29 @@ document.addEventListener('DOMContentLoaded', () => {
     makeChaPage();
 
     let sortArr = (arr) => {
-       arr.sort(); 
+        arr.sort();
     }
-    sortArr(movieDB.movies);
-
 
     function createMovieList(films, parent) {
 
         parent.innerHTML = '';
+        sortArr(films);
         films.forEach((film, i) => {
             parent.innerHTML += `
             <li class="promo__interactive-item"> ${i + 1} - ${film}
                <div class="delete"></div>
             </li>`;
         });
+        document.querySelectorAll('.delete').forEach((btn, i) => {
+            btn.addEventListener('click', () => {
+                btn.parentElement.remove();
+                movieDB.movies.splice(i, 1);
+                createMovieList(films, parent);
 
+            });
+        })
     }
+
     createMovieList(movieDB.movies, movieList);
 
 });
